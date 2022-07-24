@@ -8,6 +8,8 @@ const asunto= document.querySelector('#asunto')
 const mensaje= document.querySelector('#mensaje')
 
 const btnEnviar = document.querySelector('#enviar')
+const btnReset= document.querySelector('#resetBtn')
+
 const expresionRegluar= /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 
@@ -17,6 +19,7 @@ email.addEventListener('blur', validarFormulario)
 asunto.addEventListener('blur', validarFormulario)
 mensaje.addEventListener('blur', validarFormulario)
 formulario.addEventListener('submit', mensajeEnviado)
+btnReset.addEventListener('click', resetearFormulario)
 
 
 function iniciarApp(){
@@ -143,4 +146,15 @@ function mostrarError(mensaje){
         email.classList.remove('border', 'border-green-500')
         asunto.classList.remove('border', 'border-green-500')
         mensaje.classList.remove('border', 'border-green-500')
+        const error= document.querySelector('p.error')
+
+            if(error){
+                error.remove()
+    
+            }
     }
+
+    // function eliminarCampos(){
+    //     formulario.reset()
+
+    // }
