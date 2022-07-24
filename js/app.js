@@ -8,6 +8,7 @@ const asunto= document.querySelector('#asunto')
 const mensaje= document.querySelector('#mensaje')
 
 const btnEnviar = document.querySelector('#enviar')
+const expresionRegluar= /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 
 
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', iniciarApp)
 email.addEventListener('blur', validarFormulario)
 asunto.addEventListener('blur', validarFormulario)
 mensaje.addEventListener('blur', validarFormulario)
+formulario.addEventListener('submit', mensajeEnviado)
 
 
 function iniciarApp(){
@@ -31,7 +33,11 @@ function validarFormulario(e){
         //si hay un parrafo que contenga la clase de error eliminalo
 
         const error= document.querySelector('p.error')
-        error.remove()
+        if(error){
+            error.remove()
+
+        }
+        
 
         e.target.classList.remove('border', 'border-red-500')
         e.target.classList.add('border', 'border-green-500')
@@ -44,12 +50,16 @@ function validarFormulario(e){
     }
 
     if( e.target.type==='email' ) {
-        const expresionRegluar= /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        
 
         if( expresionRegluar.test( e.target.value )){
 
             const error= document.querySelector('p.error')
-            error.remove()
+
+            if(error){
+                error.remove()
+    
+            }
         
             e.target.classList.remove('border', 'border-red-500')
             e.target.classList.add('border', 'border-green-500')
@@ -61,7 +71,17 @@ function validarFormulario(e){
             e.target.classList.add('border', 'border-red-500')
         }
     }
+         //HABLITAR BOTON 
+
+    if(expresionRegluar.test( email.value ) && asunto.value !== "" && mensaje.value !== ""){
+
+        btnEnviar.disabled= false
+        btnEnviar.classList.remove('cursor-not-allowed', 'opacity-50')
+
+    
+    }
 }
+
 
 function mostrarError(mensaje){
     
@@ -79,7 +99,48 @@ function mostrarError(mensaje){
         formulario.appendChild(mensajeError)
 
     }
-
 }
 
+  function mensajeEnviado(e){
+    e.preventDefault()
+    // el spinner esta oculto por defecto
+    const spinner= document.querySelector('#spinner')
+    spinner.style.display= 'flex'
 
+    setTimeout(()=>{
+        //despues de 3 segundos desaparece el spinner
+
+        spinner.style.display= 'none'
+        const parrafo = document.createElement('p')
+        parrafo.textContent= 'Mensaje enviado correctamente'
+        parrafo.classList.add('text-center', 'my-10', 'p-3', 'bg-green-500', 'text-white', 'uppercase')
+        
+        //Insertar el mensaje
+        formulario.insertBefore(parrafo, spinner)
+
+        setTimeout(()=>{
+            parrafo.remove()
+            resetearFormulario()
+            
+
+        },3000)
+
+       
+        
+
+    },2500)
+
+    }
+
+    function resetearFormulario(){
+
+        formulario.reset()
+        removerClases()
+        iniciarApp()
+    }
+
+    function removerClases(){
+        email.classList.remove('border', 'border-green-500')
+        asunto.classList.remove('border', 'border-green-500')
+        mensaje.classList.remove('border', 'border-green-500')
+    }
