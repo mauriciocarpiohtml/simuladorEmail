@@ -154,7 +154,4 @@ function mostrarError(mensaje){
             }
     }
 
-    // function eliminarCampos(){
-    //     formulario.reset()
-
-    // }
+    
